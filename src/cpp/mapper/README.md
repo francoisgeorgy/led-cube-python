@@ -1,9 +1,12 @@
 How to update the pixel-mapper 
 ------------------------------
 
-Copy `pixel-mapper.cc` in `/home/cube/rpi-rgb-led-matrix/lib/` .
+Copy the new mapper in the rpi-rgb-matrix library : 
 
-And do : 
+    cd /home/cube
+    cp python/src/cpp/mapper/pixel-mapper.cc rpi-rgb-led-matrix/lib/
+
+Compile the new mapper : 
 
 (note: do _not_ do that in a python venv.)
 
@@ -15,9 +18,10 @@ And do :
 
 Test :
 
-    cd /home/cube/emulator/
+    cd /home/cube/
     . .venv/bin/activate
-    ./run-sample.sh src/samples/cube_layout.py
+    cd python 
+    sudo -E env PATH=$PATH python src/examples/rgb.py --led-slowdown-gpio 5
 
 
 
