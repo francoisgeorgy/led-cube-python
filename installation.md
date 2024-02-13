@@ -32,6 +32,8 @@ If all goes well, you must get a message like :
 Continue installation : 
 
     pip install RPi.GPIO adafruit-blinka fastapi uvicorn 'uvicorn[standard]' bottle ifaddr segno 
+    # dependencies for the emulator : 
+    pip install bdfparser Pillow tornado libsixel-python pygame
 
 ### Update the pixel-mapper for the Cube : 
 

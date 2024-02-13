@@ -12,8 +12,6 @@ If you want to run the Rubik's Cube demo, see the dedicated chapter later on.
 
     pip install --editable .
     pip install fastapi uvicorn 'uvicorn[standard]' bottle ifaddr segno
-    # dependencies for the emulator : 
-    pip install bdfparser Pillow tornado libsixel-python pygame
 
 ### In the Cube
 
