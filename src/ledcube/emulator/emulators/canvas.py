@@ -48,5 +48,8 @@ class Canvas:
     def draw_to_screen(self):
         self.display_adapter.draw_to_screen(self.__pixels)
 
+    def draw_to_file(self, filepath):
+        self.display_adapter.draw_to_file(self.__pixels, filepath)
+
     def check_for_quit_event(self):
         self.display_adapter.check_for_quit_event()

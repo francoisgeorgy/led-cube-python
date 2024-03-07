@@ -63,3 +63,13 @@ class CubeBrowserAdapter(BaseAdapter):
                 fill=pixel.to_tuple(),
                 outline=pixel.to_tuple(),
             )
+
+    def draw_to_file(self, pixels, filepath):
+        image = Image.new("RGB", self.options.window_size())
+        drawer = ImageDraw.Draw(image)
+        pixel_size = self.options.pixel_size
+        for row, pixel_row in enumerate(pixels):
+            for col, pixel in enumerate(pixel_row):
+                x, y = pixel_mapper(col, row)
+                self.__draw_pixel(drawer, x * pixel_size, y * pixel_size, pixel)
+        image.save(filepath)
