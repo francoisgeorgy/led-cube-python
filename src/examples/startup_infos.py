@@ -52,26 +52,45 @@ class StartupInfos(Cube):
                 time.sleep(wait_t / 1000000000)
 
     def run(self):
-        ip = get_cube_ip()
-        a = ip.split('.')
+        # ip = get_cube_ip()
+        # a = ip.split('.')
+        ip = None
+        a = None
 
-        qr = segno.make_qr(f"http://{ip}:5040/", version=2)
+        # qr = segno.make_qr(f"http://{ip}:5040/", version=2)
 
         # Convert QR code to a binary matrix
-        qr_matrix = []
-        for row in qr.matrix_iter(scale=2):
-            qr_matrix.append([col == 0x1 for col in row])
+        # qr_matrix = []
+        # for row in qr.matrix_iter(scale=2):
+        #     qr_matrix.append([col == 0x1 for col in row])
+        qr_matrix = None
 
         c = Color.WHITE()
         while True:
+
+            if not ip:
+                ip = get_cube_ip()
+                a = ip.split('.')
+                if len(a) != 4:
+                    ip = None
+                    a = None
+            if ip:  # and not qr_matrix:
+                qr = segno.make_qr(f"http://{ip}:5040/", version=2)
+                qr_matrix = []
+                for row in qr.matrix_iter(scale=2):
+                    qr_matrix.append([col == 0x1 for col in row])
+
             self.clear()
-            p = self.planes[Face.FRONT.value]
+            # p = self.planes[Face.FRONT.value]
             y = 0
             for row in qr_matrix:
                 x = 0
                 for col in row:
                     if col:
-                        p.pixel(x, reverse(y), c)
+                        self.planes[Face.FRONT.value].pixel(x, reverse(y), c)
+                        self.planes[Face.RIGHT.value].pixel(x, reverse(y), c)
+                        self.planes[Face.BACK.value].pixel(x, reverse(y), c)
+                        self.planes[Face.LEFT.value].pixel(x, reverse(y), c)
                     x = x + 1
                 y = y + 1
 
@@ -80,9 +99,10 @@ class StartupInfos(Cube):
             uptime_s = int(time.monotonic()) % 60
 
             # self.planes[Face.TOP.value].text(3, 52, Color.GREY(), hostname)
-            self.planes[Face.TOP.value].text(3, 52, Color.GREY(), f'{a[0]}.{a[1]}.')
-            self.planes[Face.TOP.value].text(3, 42, Color.GREY(), f'{a[2]}.{a[3]}')
-            self.planes[Face.TOP.value].text(3, 32, Color.GREY(), f':5040')
+            if a:
+                self.planes[Face.TOP.value].text(3, 52, Color.GREY(), f'{a[0]}.{a[1]}.')
+                self.planes[Face.TOP.value].text(3, 42, Color.GREY(), f'{a[2]}.{a[3]}')
+                self.planes[Face.TOP.value].text(3, 32, Color.GREY(), f':5040')
             self.planes[Face.TOP.value].text(2, 2, Color.GREY(), f'{uptime_h:02}:{uptime_m:02}:{uptime_s:02}')
             self.refresh()
             time.sleep(0.1)
