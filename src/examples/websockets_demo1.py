@@ -483,13 +483,15 @@ class ThreadedApp(Cube):
         c = Color.WHITE()
         while self.command_queue.empty():
             self.clear()
-            p = self.planes[Face.FRONT.value]
             y = 0
             for row in qr_matrix:
                 x = 0
                 for col in row:
                     if col:
-                        p.pixel(x, reverse(y), c)
+                        self.planes[Face.FRONT.value].pixel(x, reverse(y), c)
+                        self.planes[Face.RIGHT.value].pixel(x, reverse(y), c)
+                        self.planes[Face.BACK.value].pixel(x, reverse(y), c)
+                        self.planes[Face.LEFT.value].pixel(x, reverse(y), c)
                     x = x + 1
                 y = y + 1
 
